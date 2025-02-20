@@ -72,4 +72,44 @@ def perimeter(vectors):
                  for i in range(0,len(vectors))]
     return sum(distances)
 
+from math import tan, pi, sin, cos, atan2
 
+def to_cartesian(polar_vector):
+    length, angle = polar_vector[0], polar_vector[1]
+    return (length*cos(angle), length*sin(angle))
+
+def to_polar(vector):
+    x, y = vector[0], vector[1]
+    angle = atan2(y, x)
+    return (length(vector), angle)
+
+def ex235():
+    print(f"Radians: {116.57*(pi/180)}")
+    print(tan(116.57*(pi/180)))
+
+def ex237():
+    polar = [(cos(5*x*pi/500.0), 2*pi*x/1000.0) for x in range(0,1000)]
+    vectors = [to_cartesian(point) for point in polar]
+    draw(Polygon(*vectors))
+
+rotation_angle = pi/4
+dino_polar = [to_polar(v) for v in dino_vectors]
+dino_rotated_polar = [(l, angle + rotation_angle) for l,angle in dino_polar]
+dino_rotated = [to_cartesian(p) for p in dino_rotated_polar]
+
+def p68():
+    draw(Polygon(*dino_vectors, color=gray),
+    Polygon(*dino_rotated, color=red))
+
+def rotate(angle, vectors):
+    polars = [to_polar(v) for v in vectors]
+    return [to_cartesian((l, a+angle)) for l,a in polars]
+
+new_dino = translate((8,8), rotate(5 * pi/3, dino_vectors))
+
+def p70():
+    draw(Polygon(*dino_vectors, color=gray),
+    Polygon(*new_dino, color=red))
+
+def regular_polygon(n):
+    return[to_cartesian((1, 2*pi*k/n)) for k in range (0,n)]
