@@ -84,3 +84,13 @@ def ex3_10():
     s = 1/length(vector)
     print(scale(s, vector))
     print(length(scale(s,vector)))
+
+def dot(u,v):
+    return sum([coord1 * coord2 for coord1,coord2 in zip(u,v)])
+
+def angle_between(v1,v2):
+    return acos(
+        dot(v1,v2) /
+        (length(v1)) * (length(v2))
+    )
+
