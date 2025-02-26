@@ -94,3 +94,7 @@ def angle_between(v1,v2):
         (length(v1)) * (length(v2))
     )
 
+def cross(u,v):
+    ux,uy,uz = u
+    vx,vy,vz = v
+    return (uy*vz - uz*vy, uz*vx - ux*vz, ux*vy - uy*vx)
