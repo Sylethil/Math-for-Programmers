@@ -1,3 +1,4 @@
+from draw2d import *
 from draw3d import *
 from math import *
 import numpy as np
@@ -12,14 +13,6 @@ def ex3_2():
                 )]
     draw3d(Points3D(*vectors),
            *[Segment3D(*segment) for segment in segments])
-    
-def add(vectors):
-    return tuple(sum(vector[i] for vector in vectors) for i in range(3))
-
-def their_add(vectors):
-    by_coordinate = zip(*vectors)
-    coordinate_sums = [sum(coords) for coords in by_coordinate]
-    return tuple(coordinate_sums)
 
 def length(v):
     return sqrt(sum(coord ** 2 for coord in v))
@@ -94,7 +87,56 @@ def angle_between(v1,v2):
         (length(v1)) * (length(v2))
     )
 
-def cross(u,v):
-    ux,uy,uz = u
-    vx,vy,vz = v
-    return (uy*vz - uz*vy, uz*vx - ux*vz, ux*vy - uy*vx)
+octahedron = [
+    [(1,0,0), (0,1,0), (0,0,1)],
+    [(1,0,0), (0,0,-1), (0,1,0)],
+    [(1,0,0), (0,0,1), (0,-1,0)],
+    [(1,0,0), (0,-1,0), (0,0,-1)],
+    [(-1,0,0), (0,0,1), (0,1,0)],
+    [(-1,0,0), (0,1,0), (0,0,-1)],
+    [(-1,0,0), (0,-1,0), (0,0,1)],
+    [(-1,0,0), (0,0,-1), (0,-1,0)],
+]
+
+def vertices(faces):
+    return list(set([vertex for face in faces for vertex in face]))
+
+def component(v,direction):
+    return (dot(v,direction) / length(direction))
+
+def vector_to_2d(v):
+    return (component(v,(1,0,0)), component(v,(0,1,0)))
+
+def face_to_2d(face):
+    return [vector_to_2d(vertex) for vertex in face]
+
+blues = matplotlib.cm.get_cmap('Blues')
+
+def unit(v):
+    return scale(1./length(v), v)
+
+def normal(face):
+    return(cross(subtract(face[1], face[0]), subtract(face[2], face[0])))
+
+from vectors import *
+from draw2d import *
+
+def render(faces, light=(1,2,3), color_map=blues, lines=None):
+    polygons = []
+    for face in faces:
+        unit_normal = unit(normal(face)) #1
+        if unit_normal[2] > 0: #2
+            c = color_map(1 - dot(unit(normal(face)), unit(light))) #3
+            p = Polygon2D(*face_to_2d(face), fill=c, color=lines) #4
+            polygons.append(p)
+    draw2d(*polygons,axes=False, origin=False, grid=None)
+
+def ex3_27():
+    top = (0,0,1)
+    bottom = (0,0,-1)
+    xy_plane = [(1,0,0),(0,1,0),(-1,0,0),(0,-1,0)]
+    edges = [Segment3D(top,p) for p in xy_plane] +\
+            [Segment3D(bottom, p) for p in xy_plane] +\
+            [Segment3D(xy_plane[i],xy_plane[(i+1)%4 ]) for i in range(0,4)] 
+    draw3d(*edges)
+ex3_27()

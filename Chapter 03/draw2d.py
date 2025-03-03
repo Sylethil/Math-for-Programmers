@@ -104,7 +104,9 @@ def draw2d(*objects, origin=True, axes=True, grid=(1,1), nice_aspect_ratio=True,
                     plt.plot([x1,x2],[y1,y2], color=object.color)
             if object.fill:
                 patches = []
-                poly = Polygon(object.vertices, True)
+                poly = Polygon(object.vertices, closed=True) #Code changed
+                #as Polygon from matplotlib defined now to expect diff
+                #parameters
                 patches.append(poly)
                 p = PatchCollection(patches, color=object.fill)
                 plt.gca().add_collection(p)
