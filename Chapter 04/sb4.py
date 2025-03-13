@@ -1,6 +1,7 @@
 from teapot import *
 from vectors import *
 from draw_model import *
+from math import *
 
 original_triangles = load_triangles()
 
@@ -27,6 +28,30 @@ def polygon_map(transformation, polygons):
         for triangle in polygons
     ]
 
-draw_model(polygon_map(scale_then_translate, original_triangles))
+def rotate2d(angle, vector):
+    l, a = to_polar(vector)
+    return to_cartesian((l, a+angle))
+
+def rotate_z(angle, vector):
+    x,y,z = vector
+    new_x, new_y = rotate2d(angle, (x,y))
+    return new_x, new_y, z
+
+def rotate_z_by(angle):
+    def new_function(v):
+        return rotate_z(angle, v)
+    return new_function
+
+def rotate_x(angle, vector):
+    x,y,z = vector
+    new_y, new_z = rotate2d(angle, (y,z))
+    return x, new_y, new_z
+
+def rotate_x_by(angle):
+    def new_function(v):
+        return rotate_x(angle,v)
+    return new_function
+
+
 
 
