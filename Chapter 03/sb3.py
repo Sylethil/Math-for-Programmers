@@ -31,7 +31,7 @@ def ex3_5():
     running_sum = (0,0,0) #<1>
     arrows = []
     for v in vs:
-        next_sum = add([running_sum, v]) #2
+        next_sum = add(running_sum, v) #2
         arrows.append(Arrow3D(next_sum, running_sum)) 
         running_sum = next_sum
     print(running_sum)
@@ -139,4 +139,5 @@ def ex3_27():
             [Segment3D(bottom, p) for p in xy_plane] +\
             [Segment3D(xy_plane[i],xy_plane[(i+1)%4 ]) for i in range(0,4)] 
     draw3d(*edges)
+
 ex3_27()
