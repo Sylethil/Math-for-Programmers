@@ -20,7 +20,10 @@ def length(v):
     return sqrt(sum([coord ** 2 for coord in v]))
 
 def dot(u,v):
-    return sum([coord1 * coord2 for coord1,coord2 in zip(u,v)])
+    if len(v[0]) != len(u):
+        return print("Exception: invalid dot")
+    else:
+        return sum([coord1 * coord2 for coord1,coord2 in zip(u,v)])
 
 def distance(v1,v2):
     return length(subtract(v1,v2))
